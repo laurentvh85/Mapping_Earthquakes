@@ -51,9 +51,13 @@ let map = L.map("mapid", {
 // Create the earthquake layer for our map.
 let earthquakes = new L.layerGroup();
 
+// Create tectonic plates layer for map
+let tectonicPlates = new L.layerGroup();
+
 // We define an object that contains the overlays.
 let overlays = {
   Earthquakes: earthquakes,
+  "Tectonic Plates": tectonicPlates,
 };
 
 // Add a control to the map that will allow the user to change which layers are visible.
@@ -166,4 +170,17 @@ d3.json(earthquakeData).then(function (data) {
     return div;
   };
   legend.addTo(map);
+});
+
+// define tectonic data
+let tectonicData =
+  "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json";
+
+// Grabbing our GeoJSON data.
+d3.json(tectonicData).then(function (data) {
+  console.log(data);
+  // Creating a GeoJSON layer with the retrieved data.
+  L.geoJson(data, { color: "blue" }).addTo(tectonicPlates);
+
+  tectonicPlates.addTo(map);
 });
